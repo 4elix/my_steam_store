@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Жейлаемое
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3 class="text-center custom-bg" style="color: blueviolet;">Жилаемое</h3>
+    <div class="d-flex justify-content-center mb-4">
+        <p class="w-50" style="border-bottom: 3px solid rgb(255, 0, 0);"></p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 g-5">
+        <div class="col">
+            <div class="card bg-dark">
+                <div class="row g-o">
+                    <div class="col-4">
+                        {% if profile.profile_image %}
+                        <div class="p-2 text-center">
+                            <img src="{{ profile.profile_image.url }}" class="card-img-top profile_image_active"
+                                 alt="...">
+                        </div>
+                        {% else %}
+                        <div class="p-2 text-center">
+                            <img src="{% static 'image/dont_user.png' %}" class="card-img-top profile_image"
+                                 alt="...">
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between flex-column my-auto">
+                                <p class="card-text text-blueviolet fs-5">
+                                    Логин: {{ user_name|title }}
+                                </p>
+                                {% if profile.first_name and profile.last_name %}
+                                <p class="card-text text-blueviolet fs-5">
+                                    Имя: {{ profile.first_name|title }}
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Фамилия: {{ profile.last_name|title }}
+                                </p>
+                                {% endif %}
+                                <p class="card-text text-blueviolet fs-5">
+                                    Кол-во желаемых игр: {{ count_user_desired }}
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Кол-во отзывов: {{ count_user_reviews }}
+                                </p>
+                                <p class="card-text text-blueviolet fs-5">
+                                    Кол-во купленных игр: {{ count_user_buy_game }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-end">
+                                <a href="{% url 'profile' request.user.pk %}" class="btn btn-outline-danger my-auto">
+                                    Перейти на профиль
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card bg-dark">
+                {% if list_desired %}
+                <ul class="list-group list-group-flush p-2">
+                    {% for item in list_desired %}
+                    <li class="bg-dark list_li">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ item.game.get_absolute_url }}"
+                               class="list-group-item bg-dark text-danger my-auto fs-5" style="border: none;">
+                                {{ item.game.title }}
+                            </a>
+                            {% if item.game.discount > 0.0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fs-6">
+                            скидка {{ item.game.discount }}%
+                            </span>
+                            <small class="text-danger my-auto py-3 fs-5">{{ item.game.price_new }} $$</small>
+                            {% else %}
+                            <small class="text-danger my-auto py-3 fs-5">{{ item.game.price_old }} $$</small>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+
+                <h3 class="py-3 text-center text-blueviolet">У вас нету желаемых</h3>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

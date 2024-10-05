@@ -1,0 +1,41 @@
+{% for c in comments %}
+<div class="card my-4 bg-dark">
+    <div class="card-header text-danger">
+        {{ c.auth }}
+    </div>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p class="text-danger">{{ c.content }}</p>
+            <footer class="blockquote-footer text-danger">{{ c.datetime_review }}</footer>
+        </blockquote>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item bg-dark">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed accordion-custom bg-dark" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false"
+                            aria-controls="flush-collapse{{ forloop.counter }}">
+                        Ответы
+                    </button>
+                </h2>
+                <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                     data-bs-parent="#accordionFlushExample">
+                    {% for cr in c.replies.all %}
+                    <div class="card mt-4 bg-dark">
+                        <div class="card-header text-danger">
+                            {{ cr.auth }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p class="text-danger">{{ cr.content }}</p>
+                                <footer class="blockquote-footer text-danger">{{ cr.datetime_review }}</footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

@@ -1,0 +1,267 @@
+body {
+    background: url(../image/back.png);
+    background-position: center, center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.custom-border {
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.custom-bg {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.814);
+}
+
+.text-blueviolet {
+    color: blueviolet;
+}
+
+.text-paginator {
+    color: blueviolet;
+    font-size: 19px;
+}
+
+.text-paginator:hover {
+    color: red;
+    font-size: 19px;
+}
+
+.btn-outline-blueviolet {
+    border: 2px solid blueviolet;
+    color: blueviolet;
+}
+
+.btn-outline-blueviolet:hover {
+    color: white;
+    background-color: blueviolet;
+}
+
+.btn-blueviolet {
+    color: white;
+    border: 2px solid blueviolet;
+    background-color: blueviolet;
+}
+
+.btn-blueviolet:hover {
+    color: white;
+    background-color: #600599;
+}
+
+.item-list-custom {
+    color: rgb(0, 0, 0);
+    background-color: blueviolet;
+}
+
+.item-list-custom:hover {
+    color: white;
+    background-color: rgb(111, 14, 201);
+}
+
+.active-custom {
+    color: white;
+    background-color: rgb(100, 21, 173);
+}
+
+.catalog-item {
+    background-color: black;
+    color: blueviolet;
+}
+
+.catalog-item:hover {
+    background-color: rgba(0, 0, 0, 0.895);
+    color: red;
+}
+
+.form-custom {
+    border: 2px solid black;
+    background-color: blueviolet;
+}
+
+.form-custom:focus {
+    border: 2px solid black;
+    background-color: blueviolet;
+    box-shadow: none;
+}
+
+.custom-link {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}
+
+.accordion-custom {
+    margin-top: 20px;
+    color: blueviolet;
+    border: 2px solid #c20808;
+}
+
+.text-help {
+    color: red;
+    width: max-content;
+    background: #000;
+    padding: 10px;
+}
+
+.custom_image {
+    height: 200px;
+}
+
+.list_li {
+    list-style: none;
+}
+
+.list_li:not(:last-child){
+    border-bottom: 2px solid blueviolet;
+}
+
+.profile_image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    border: 1px solid black;
+    box-shadow: 9px 7px 6px #bd1111;
+}
+
+
+.profile_image_active {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 10px;
+    border: 1px solid black;
+}
+
+.alert-success {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.alert-success hr {
+    border-top-color: #c9e2b3;
+}
+
+.alert-info {
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+}
+
+.alert-info hr {
+    border-top-color: #a6e1ec;
+}
+
+.alert-info .alert-link {
+    color: #245269;
+}
+
+.alert-warning {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+
+.alert-warning hr {
+    border-top-color: #f7e1b5;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+.alert-danger hr {
+    border-top-color: #e4b9c0;
+}
+
+.img-library {
+    width: 25%;
+}
+
+#preloader {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 9999;
+}
+
+#loader {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    border: 10px solid rgba(220, 53, 69, 1);
+    border-top: 10px solid blueviolet;
+    border-radius: 50%;
+    width: 88px;
+    height: 88px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hide the preloader when content is loaded */
+body:not(.loading) #preloader {
+    display: none;
+    overflow: hidden;
+}
+
+/* use reverse flexbox to take advantage of flex-direction: reverse */
+.star-rating {
+  display: flex;
+  width: 160px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  position: relative;
+}
+/* hide the inputs */
+.star-rating input {
+  display: none;
+}
+/* set properties of all labels */
+.star-rating > label {
+  width: 30px;
+  height: 30px;
+  font-family: Arial;
+  font-size: 30px;
+  transition: 0.2s ease;
+  color: red;
+}
+/* give label a hover state */
+.star-rating label:hover {
+  color: blueviolet;
+  transition: 0.2s ease;
+}
+.star-rating label:active::before {
+  transform:scale(1.1);
+}
+
+/* set shape of unselected label */
+.star-rating label::before {
+  content: '\2606';
+  position: absolute;
+  top: 0px;
+  line-height: 26px;
+}
+/* set full star shape for checked label and those that come after it */
+.star-rating input:checked ~ label:before {
+  content:'\2605';
+}
+
+@-moz-document url-prefix() {
+  .star-rating input:checked ~ label:before {
+  font-size: 36px;
+  line-height: 21px;
+  }
+}

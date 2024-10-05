@@ -1,0 +1,76 @@
+{% load like_tag %}
+
+
+{% for c in comments %}
+{% count_like_dislike request.user c.pk as count_like %}
+<div class="card my-4 bg-dark">
+    <div class="card-header text-danger">
+        {{ c.auth }}
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-start">
+            <a href="{% url 'active_like_logic' c.pk %}">
+                <i class="bi bi-hand-thumbs-up-fill text-danger pe-3">{{ count_like.like }}</i>
+            </a>
+            <a href="{% url 'active_like_logic' c.pk %}">
+                <i class="bi bi-hand-thumbs-down-fill text-danger ps-3">{{ count_like.dislike }}</i>
+            </a>
+        </div>
+        <blockquote class="blockquote mb-0">
+            <p class="text-danger">{{ c.content }}</p>
+            <footer class="blockquote-footer text-danger">{{ c.datetime_review }}</footer>
+        </blockquote>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item bg-dark">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed accordion-custom bg-dark" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false"
+                            aria-controls="flush-collapse{{ forloop.counter }}">
+                        Ответы
+                    </button>
+                </h2>
+                <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                     data-bs-parent="#accordionFlushExample">
+                    {% for cr in c.replies.all %}
+                    <div class="card mt-4 bg-dark">
+                        <div class="card-header text-danger">
+                            {{ cr.auth }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                                <p class="text-danger">{{ cr.content }}</p>
+                                <footer class="blockquote-footer text-danger">{{ cr.datetime_review }}</footer>
+                            </blockquote>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="accordion accordion-flush bg-dark" id="accordionFlushExampleForm">
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed accordion-custom bg-dark" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#flush-collapse-form{{ forloop.counter }}"
+                                        aria-expanded="false"
+                                        aria-controls="flush-collapse-form{{ forloop.counter }}">
+                                    Ответите
+                                </button>
+                            </h2>
+                            <div id="flush-collapse-form{{ forloop.counter }}"
+                                 class="accordion-collapse collapse bg-dark"
+                                 data-bs-parent="#accordionFlushExampleForm">
+                                <form action="{% url 'add_reply_path' c.pk %}" method="post"
+                                      class="mt-5 bg-dark text-danger">
+                                    {% csrf_token %}
+                                    {{ comment_form.as_p }}
+                                    <button class="btn btn-outline-blueviolet" type="submit">Ответить</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

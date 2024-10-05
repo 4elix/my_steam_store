@@ -1,0 +1,14 @@
+{% load static  %}
+
+<div class="d-flex justify-content-between">
+    <div><p class="text-blueviolet">Название:</p></div>
+    {% if item.game.price_new <= 0 %}
+    <div><p class="text-blueviolet">{{ item.game.price_old }}</p></div>
+    {% else %}
+    <div><p class="text-blueviolet">{{ item.game.price_old }}</p></div>
+    {% endif %}
+    <div class="quantity">
+        <p class="text-blueviolet">Количество товара: {{ item.quantity }}</p>
+    </div>
+    <div><p>{{ item.get_total_price }}</p></div>
+</div>

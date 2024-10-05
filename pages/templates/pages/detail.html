@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load price_tag status_payment rating_tag like_tag %}
+
+{% block title %}
+{{ game.title }}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-center">
+        <div class="col-9">
+            <div class="card h-100 bg-dark">
+                <div class="d-flex justify-content-center">
+
+                    <div class="p-3">
+                        <img src="{{ game.get_first_photo }}" class="card-img-top custom-border"
+                             style="min-width: 200px;" alt="..." onclick="openFullscreen(this)">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-evenly">
+                    {% for i in game.get_second_photo %}
+                    <div class="col-3 my-auto">
+
+                        <img src="{{ i.photo.url }}" class="card-img-top custom-border"
+                             onclick="openFullscreen(this)" alt="...">
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-body">
+                    <div class="my-auto">
+                        <h4 class="card-title text-blueviolet">{{ game.title }}</h4>
+                    </div>
+                    <p class="card-text fs-5 text-blueviolet">
+                        Краткое описание: {{ game.short_description }}
+                    </p>
+                    <br>
+                    <p class="card-text fs-5 text-blueviolet">
+                        Описание: {{ game.full_description }}
+                    </p>
+
+                    <div class="d-flex flex-column pb-2">
+                        <small class="text-blueviolet fs-5">Дата выхода: {{ game.date_time }}</small>
+                        <small class="text-blueviolet fs-5">Категория: {{ game.category }}</small>
+                    </div>
+                    <div class="d-flex flex-row text-danger">
+                        <small class="text-blueviolet fs-5">Теги или под категории: </small>
+                        {% for tag in game.tags.all %}
+                        <small class="text-blueviolet fs-5 px-2">{{ tag }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="my-5">
+                        {% if request.user.is_authenticated %}
+                        {% show_rating request.user game.pk as status_rating %}
+                        {% if status_rating.status == 'show_form' %}
+                        <form action="{% url 'rating_activate' game.pk %}">
+                            <div class="d-flex">
+                                <div class="star-rating">
+                                    {% for num in range_number %}
+                                    <input type="radio" name="stars" id="star-a_{{ num }}" value="{{ num }}">
+                                    <label for="star-a_{{ num }}"></label>
+                                    {% endfor %}
+                                </div>
+                                <button type="submit" class="btn btn-danger">Оценить</button>
+                            </div>
+                        </form>
+
+                        <p class="text-blueviolet fs-5">Общая оценка: {{ status_rating.overall_rating }} ⭐</p>
+                        {% else %}
+                        <p class="text-blueviolet fs-5">Дополнительная информация:</p>
+
+                        <p class="text-blueviolet fs-5">Ваша оценка: {{ status_rating.rating }} ⭐</p>
+                        <p class="text-blueviolet fs-5">Общая оценка: {{ status_rating.overall_rating }} ⭐</p>
+                        {% endif %}
+                        {% endif %}
+                        <p class="text-blueviolet fs-5">Просмотры: {{ game.views }}<i class="bi bi-eye-fill"></i></p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-evenly">
+                        <div class="d-flex flex-column">
+                            {% if request.user.is_authenticated %}
+                            {% check_payment request.user game.pk as status_payment %}
+                            {% if status_payment %}
+                            <a href="{% url 'download_path' game.slug %}"
+                               class="btn btn-outline-danger my-auto">
+                                Скачать
+                            </a>
+                            {% else %}
+                            <a href="{% url 'to_cart' game.pk 'add' %}" class="btn btn-outline-danger">
+                                Купить
+                            </a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="d-flex flex-column pb-2 text-blueviolet">
+                            {% price_simple_tag game.price_old game.price_new game.discount as price %}
+                            {{ price }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        {% if request.user.is_authenticated %}
+        <div class="col-8 bg-dark p-3">
+            <form action="" method="post" class="text-blueviolet">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+
+                <button type="submit" class="btn btn-outline-blueviolet">Отправить</button>
+            </form>
+            {% include 'components/_comments.html' %}
+
+        </div>
+        {% else %}
+        <div class="col-8 bg-dark p-3">
+            <h3 class="text-center text-blueviolet">Хотите оставить комментарии, вам нужно войти в аккаунт или
+                зарегистрироваться.</h3>
+            {% include 'components/_comments_anonymous.html' %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
